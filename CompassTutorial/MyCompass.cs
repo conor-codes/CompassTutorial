@@ -17,8 +17,18 @@ namespace CompassTutorial
         private void Compass_ReadingChanged(object sender, CompassChangedEventArgs e)
         {
             double value = e.Reading.HeadingMagneticNorth;
-            string valueFormated = String.Format("{0} {1} {2}", value.ToString("0"), CalculateDirection(value), "\u00b0");
+            string valueFormated = String.Format("{0} {2} {1}", ValidateValue(value).ToString("0"), CalculateDirection(value), "\u00b0");
             GetCompassValue?.Invoke(this, valueFormated);
+        }
+
+        private double ValidateValue(double value)
+        {
+            if(value < 0)
+            {
+                value += 360;
+            }
+
+            return value;
         }
 
         public void Start()
